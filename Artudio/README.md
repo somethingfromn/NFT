@@ -17,4 +17,7 @@
         - 블록: 드랜잭션 덩어리 
         - 거래 기록을 단순히 쌓아두는 것이 아니라, '해시함수'라는 암호 기술을 호라용해서 블록을 만들고, 사슬처럼 서로 연결되어 저장
         - ![image](https://user-images.githubusercontent.com/58179041/124736454-faeb4600-df51-11eb-9109-6befbda35ba3.png)
+        - ![image](https://user-images.githubusercontent.com/58179041/124736550-148c8d80-df52-11eb-9390-17190518ed82.png)
+        - 
+
 
