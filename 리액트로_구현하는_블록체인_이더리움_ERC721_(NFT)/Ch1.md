@@ -23,5 +23,10 @@
             -  가상 자산 - 특별한 그림, 디지털 자산
             -  "Negative value" assest - Loans, burdens and other respnsibilites 채무
             -  ![image](https://user-images.githubusercontent.com/58179041/124742089-5a982000-df57-11eb-892d-6d1e2b7312c3.png)
+            -  ![image](https://user-images.githubusercontent.com/58179041/124742233-78fe1b80-df57-11eb-9133-f273d6dca605.png)
+            -  ![image](https://user-images.githubusercontent.com/58179041/124742276-81eeed00-df57-11eb-96fd-f7616be79755.png)
+            -  
+
+
 
 
