@@ -5,7 +5,7 @@
 
 ### 1.1 이더리움 Dapp
 
-  1.1 ![image](https://user-images.githubusercontent.com/58179041/124739207-9e3d5a80-df54-11eb-8d11-7ec616316c7e.png)
+   - ![image](https://user-images.githubusercontent.com/58179041/124739207-9e3d5a80-df54-11eb-8d11-7ec616316c7e.png)
        - 백앤드 로직에 해당하는 부분이 스마트 컨트랙으로 구현이 가능하고, 화면은 프론트 앤드 개발로 보아도 무방함
            - 즉, 웹 개발용인 자바스크립트, HTML, CSS를 사용하게 될 것
        - Drizzle-react: 리액트 어플리케이션 개발할 때 꽤 많은 자바스크립트 모듈을 사용해야 하는데, 그것들을 미리 작성하고 제공함 -->Truffle box
@@ -30,7 +30,11 @@
             -  ![image](https://user-images.githubusercontent.com/58179041/124742276-81eeed00-df57-11eb-96fd-f7616be79755.png)
             -  ![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/58179041/124754635-6854a200-df65-11eb-951b-bef361d5a008.gif)
 
-### Ch2. 
+## 2. 개발환경 구성
+
+### 2.1 교육 자료 다운로드
+
+### 2.1 트러플, 가나슈, 드리슐 설치
 
 
 
