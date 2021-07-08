@@ -10,7 +10,7 @@
        - Drizzle-react: 리액트 어플리케이션 개발할 때 꽤 많은 자바스크립트 모듈을 사용해야 하는데, 그것들을 미리 작성하고 제공함 -->Truffle box
    - 이더리움 Dapp = UL + Smart Contract
        - 이더리움 Dapp은 자바스크립트 뿐만이 아니라, Java, Python, .Net, Go 등 다양한 언어에서 개발이 가능하다. 라이브러리는 web3.js
----
+
 ### 1.2 ERC-721
    - Token
       - 특정 서비스에서 구매 등의 목적에 맞게 사용할 수 있는 교환 수단, 넓은 의미로는 다음과 같음, 화폐 ex) 이용권, 카지노, 칩, 각종 포인트, 암호화폐 "코인"
@@ -29,7 +29,7 @@
          - ![image](https://user-images.githubusercontent.com/58179041/124742233-78fe1b80-df57-11eb-9133-f273d6dca605.png)
          - ![image](https://user-images.githubusercontent.com/58179041/124742276-81eeed00-df57-11eb-96fd-f7616be79755.png)
          - ![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/58179041/124754635-6854a200-df65-11eb-951b-bef361d5a008.gif)
-
+---
 ## 2. 개발환경 구성
 
 ### 2.1 교육 자료 다운로드
