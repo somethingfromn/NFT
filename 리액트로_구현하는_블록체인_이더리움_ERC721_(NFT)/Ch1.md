@@ -18,7 +18,7 @@
       - Q) 이미 코인이 있는데 왜 토큰을 발행하는가?
          - A) 프로젝트를 수행하기 위한 거대한 투자를 유치해야 하는데, 증권형 토큰을 발행해줌 (토큰 구매 기록을 이더리움 블록체인 스마트컨트랙트에 기록하는 행위) 
    - Non-funcgibal Token (NFT)
-      - ![image](https://user-images.githubusercontent.com/58179041/124741624-de054180-df56-11eb-815a-664552ceeb6f.png)
+   ![image](https://user-images.githubusercontent.com/58179041/124741624-de054180-df56-11eb-815a-664552ceeb6f.png)
    - 서로 가치가 상이하지 않아서 교환할 수 없는 것, 대체 불가 (고유한 ID) Ex) 크립토키티의 고양이들
    - Non-fungible Token (NFT) = Deed (권리증)
       - 실물 자산 - 부동산, 예술품
