@@ -30,7 +30,8 @@
          - ![image](https://user-images.githubusercontent.com/58179041/124742276-81eeed00-df57-11eb-96fd-f7616be79755.png)
          - ![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/58179041/124754635-6854a200-df65-11eb-951b-bef361d5a008.gif)
 ---
-## 2. 개발환경 구성
+
+## 2. 개발환경 구성 (21/07/08)
 
 ### 2.1 교육 자료 다운로드
    
