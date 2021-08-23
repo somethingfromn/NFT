@@ -49,5 +49,38 @@
 ---
 ## 3. ERC721 표준
 
+### 3.1 NFT, Deed의 개념과 토큰 표준
+
+   - A standard interface for non-fungible tokens, also known as deeds(소유권 증명서)
+   - ![image](https://user-images.githubusercontent.com/58179041/130433796-6cfa7268-d493-43c0-a279-d08a07c516b0.png)
+   - interface 인터페이스
+      - 구현부(body)가 전혀 없이 함수를 선언한 컨트랙트 (하나라도 구현한 것이 있으면 추상 컨트랙트)
+      - 함수는 external로 선언되어야 하고(외부에서만 호출가능),생성자와 상태변수를 가질 수 없음 (직접 내에서 호출은 안된다.
+      - 다중 인터페이스는 가능
+   - ERC-721 표준에 정의된 인터페이스
+      - ![image](https://user-images.githubusercontent.com/58179041/130434202-6b66c9f9-7c71-43da-a8c5-2ea5281aa968.png)
+      - ERC-721 메인 인터페이스
+      - ![image](https://user-images.githubusercontent.com/58179041/130434271-fa5c240c-17a0-47f4-b86f-48fdb58fb1c2.png)
+   - 기타 사항
+      - ![image](https://user-images.githubusercontent.com/58179041/130434476-35f57995-1e8a-429d-894d-bd24ad84e14e.png)
+      - 토큰 ID는 정해진 표준 규격이 없지만, 유니크 해야 하긴 한다.
+
+### 3.2 ERC721 인터페이스
+
+   - ![image](https://user-images.githubusercontent.com/58179041/130436048-d450e1eb-bd24-4513-acc9-8e9f4a1cae0d.png)
+   - ERC165는 ERC721이 구현되었다는 것을 True 값으로 바꿔주며 알려줄 부분
+   - "this.~"이 부분은 selection 부분을 모두 xor 연산을 진행하여서 그 값을 그 함수에 전달했을 때에 'true'가 나오면 그 값이 전달이 되었다라는 의미
+   - ![image](https://user-images.githubusercontent.com/58179041/130436365-baa4262c-2e9e-4a0d-8d81-aac0d00fc410.png)
+
+
+### 3.3 컨트랙트 - 주요로직
+
+### 3.4 컨트랙트 구현(1) - 기본 인터페이스
+### 3.5 컨트랙트 구현(2) - 기본 인터페이스
+### 3.6 컨트랙트 구현(3) - 기본 인터페이스
+### 3.7 컨트랙트 구현(4) - 기본 인터페이스
+### 3.8 트러플 컴파일, 배포, 단위 테스트
+
+
 ---
 ## 4. 드리즐(drizzle)
