@@ -69,9 +69,18 @@
 
    - ![image](https://user-images.githubusercontent.com/58179041/130436048-d450e1eb-bd24-4513-acc9-8e9f4a1cae0d.png)
    - ERC165는 ERC721이 구현되었다는 것을 True 값으로 바꿔주며 알려줄 부분
-   - "this.~"이 부분은 selection 부분을 모두 xor 연산을 진행하여서 그 값을 그 함수에 전달했을 때에 'true'가 나오면 그 값이 전달이 되었다라는 의미
+   - "this.~"이 부분은 selection 부분을 모두 xor 연산을 진행하여서 그 값을 그 함수에 전달했을 때에 'true'가 나오면 그 값이 전달이 되었다라는 의미 (아래 이미지 포함)
    - ![image](https://user-images.githubusercontent.com/58179041/130436365-baa4262c-2e9e-4a0d-8d81-aac0d00fc410.png)
-
+   
+   - ![image](https://user-images.githubusercontent.com/58179041/130436497-ac5857eb-fcd8-4b70-913b-005b1cf6175a.png)
+   - 특정 상황에 따라 각각 이벤트가 발생하도록 하게 함
+   - ![image](https://user-images.githubusercontent.com/58179041/130436713-7a3d1821-9054-40ba-8f55-16ea079617c1.png)
+   - bytes data는 부가적인 데이터를 줄 수 있는 함수, tokenid는 어떤 토큰을 넘겨줄 것인지, 소유권이 한번 넘어가게되면 블록체인에는 계정정보가 존재하지 않아서 굉장히 찾기가 어려워진다. 그래서 code size>0 클 경우 한번 더 체크해본다. 한번 트랜색션이 성공하면 거의 끝난다! 조심!
+   - ![image](https://user-images.githubusercontent.com/58179041/130437666-bf80390a-74ee-4f6d-a7e5-cfee64001031.png)
+   - ![image](https://user-images.githubusercontent.com/58179041/130437899-67b572e7-fd3a-49f5-91de-a8b0c9e2eb53.png)
+   - 확장 인터페이스 부분
+   - 유효한 토큰 수: 소유 계정이 존재하고 있는 토큰의 총합
+   -   
 
 ### 3.3 컨트랙트 - 주요로직
 
