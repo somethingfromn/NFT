@@ -94,6 +94,11 @@
    - Solidity 의 major 버전이 바뀌면서, 다수의 breaking changes 있다. 1) 두 가지는 address에 payable이 붙을 수 있다. 2) reference type의 변수를 전달할 때에는 명시적으로 memory라고 적어주어야 한다. 이에 맞춰서 컨트랙트를 수정!
    - ![image](https://user-images.githubusercontent.com/48021223/136768480-9fa2d42e-9e75-4cd1-ae2e-1700764fb4af.png)
    - 각 이미지를 벡터 조합 -> unsigned int 타입으로 x, y, z에 저장하고 그것들을 토큰 ID와 연결
+   - asset[]는 이미지를 나타내는 구조체의 배열을 의미
+   - ![image](https://user-images.githubusercontent.com/58179041/136769061-86f89e8e-f97e-4a64-8afb-4d2143084d94.png)
+   - 토큰 목록을 화면에 표시하려면 Enumeration이 필요하다. 
+   - unit256 [] 배열: 인덱스로 토큰 ID를 가져오려면, 이런 구조의 allValidTokenIds (폐기, 삭제가 아닌 유효한 토큰들)가 만들어져 있어야 한다. 
+   - mapping(unit256 => uint256) : 부가적으로, 반대로 토큰ID로 인덱스를 가져올 수 도 있다. 
 
 ### 3.3 컨트랙트 - 주요로직
 
