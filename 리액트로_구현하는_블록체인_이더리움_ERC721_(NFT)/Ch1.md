@@ -80,7 +80,20 @@
    - ![image](https://user-images.githubusercontent.com/58179041/130437899-67b572e7-fd3a-49f5-91de-a8b0c9e2eb53.png)
    - 확장 인터페이스 부분
    - 유효한 토큰 수: 소유 계정이 존재하고 있는 토큰의 총합
-   -   
+   - TokenOfOwnerByIndeex 부분은 토큰 ID를 조회하는 부분
+   - ![image](https://user-images.githubusercontent.com/48021223/136767338-5a9c74be-44f1-43f1-9c1c-49a5b788c350.png)
+   - Meta 정보를 토근 ID쪽으로 리턴해주는 정보
+   - tokenURI : 토큰의 return 하는 정보 (url, ipfs 파일의 해쉬값 등을 문자열 형태로)
+   - 
+
+### 3.3 컨트랙트 - 주요로직
+
+   - ![image](https://user-images.githubusercontent.com/48021223/136767895-eb34118f-65b6-4509-ab81-7acfe2cf6c94.png)
+   - 우리가 작성할 컨트랙트 이름은 Deedtoken이며, 이것을 작성하기 위해서 ERC 721, 165 인터페이스를 구축를 하고, SafeMath와 Address 라이브러리를 사용할 것이고, 이것들은 Solidity 프로그래밍에서 자주 활용되는 OpenZeppelin repo에서 가져오도록 한다.
+   - ![image](https://user-images.githubusercontent.com/48021223/136768200-56f840db-96df-4a0b-bb4c-87011261d2e2.png)
+   - Solidity 의 major 버전이 바뀌면서, 다수의 breaking changes 있다. 1) 두 가지는 address에 payable이 붙을 수 있다. 2) reference type의 변수를 전달할 때에는 명시적으로 memory라고 적어주어야 한다. 이에 맞춰서 컨트랙트를 수정!
+   - ![image](https://user-images.githubusercontent.com/48021223/136768480-9fa2d42e-9e75-4cd1-ae2e-1700764fb4af.png)
+   - 각 이미지를 벡터 조합 -> unsigned int 타입으로 x, y, z에 저장하고 그것들을 토큰 ID와 연결
 
 ### 3.3 컨트랙트 - 주요로직
 
