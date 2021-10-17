@@ -119,6 +119,59 @@
 ### 3.5 컨트랙트 구현(2) - 기본 인터페이스
 ### 3.6 컨트랙트 구현(3) - 기본 인터페이스
 ### 3.7 컨트랙트 구현(4) - 기본 인터페이스
+   - ~~~
+
+    function removeInvalidToken(uint256 tokenIdToRemove) private {
+
+        uint256 lastIndex = allValidTokenIds.length.sub(1);
+        uint256 removeIndex = allValidTokenIndex[tokenIdToRemove];
+        //마지막 토큰 아이디는 배열의 last 인덱스 값을 넣어줌으로써 구할 수 있다.
+        uint256 lastTokenId = allValidTokenIds[lastIndex];
+
+        //swap
+        //이 두 개의 자리를 바꿔준다. 
+        allValidTokenIds[removeIndex] = lastTokenId;
+        allValidTokenIndex[lastTokenId] = removeIndex;
+
+        //delete
+        //Arrays have a length member to hold their number of elements.
+        //Dynamic arrays can be resized in storage (not in memory) by changing the .length member.
+        //유효한 토큰의 길이를 줄여준다.
+        allValidTokenIds.length = allValidTokenIds.length.sub(1);
+        //allValidTokenIndex is private so can't access invalid token by index programmatically
+        //페기되는 토큰의 인덱스는 0으로 만들어준다, 의미는 X
+        allValidTokenIndex[tokenIdToRemove] = 0;
+    }
+
+    //ERC721Enumerable
+    //현재까지 발행된 유효한 토큰의 전체 개수
+    function totalSupply() public view returns (uint) {
+        return allValidTokenIds.length;
+    }
+
+    //ERC721Enumerable
+    //인덱스로 토큰 아이디를 가져오는 것.
+    function tokenByIndex(uint256 index) public view returns (uint256) {
+        //인덱스는 토탈 서플라이보다 작아야 한다.
+        require(index < totalSupply());
+        return allValidTokenIds[index];
+    }
+
+    //ERC721Metadata
+    //이모지토큰이라는 이름을 리턴해준다.
+    function name() external pure returns (string memory) {
+        return "EMOJI TOKEN";
+    }
+
+    //ERC721Metadata
+    //ENJ라는 토큰 심볼을 리턴한다.
+    function symbol() external pure returns (string memory) {
+        return "EMJ";
+    }
+    function kill() external onlyOwner {
+        selfdestruct(owner);
+    }
+    ~~~
 ### 3.8 트러플 컴파일, 배포, 단위 테스트
 
 
