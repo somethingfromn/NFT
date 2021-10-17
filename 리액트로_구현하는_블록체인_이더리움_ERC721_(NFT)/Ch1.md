@@ -115,14 +115,14 @@
 
 
 ### 3.4 컨트랙트 구현(1) - 기본 인터페이스 (Deeptoken.sol)
-pragma solidity 0.5.16;
+    pragma solidity 0.5.16;
 
-import "./ERC721.sol";
-import "./ERC165.sol";
-import "./SafeMath.sol";
-import "./Address.sol";
+    import "./ERC721.sol";
+    import "./ERC165.sol";
+    import "./SafeMath.sol";
+    import "./Address.sol";
 
-contract DeedToken is ERC721, ERC165 {
+    contract DeedToken is ERC721, ERC165 {
 
     using SafeMath for uint256;
     using Address for address;
