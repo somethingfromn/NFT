@@ -114,12 +114,233 @@
    - 사용하는 라이브러리 중에 address는 ERC721에서 소유권을 넘겨받는 계정이 contract인지 아닌지를 검토해봐야 한다.
 
 
-### 3.4 컨트랙트 구현(1) - 기본 인터페이스
-   - 
-### 3.5 컨트랙트 구현(2) - 기본 인터페이스
-### 3.6 컨트랙트 구현(3) - 기본 인터페이스
-### 3.7 컨트랙트 구현(4) - 기본 인터페이스
-   - ~~~
+### 3.4 컨트랙트 구현(1) - 기본 인터페이스 (Deeptoken.sol)
+pragma solidity 0.5.16;
+
+import "./ERC721.sol";
+import "./ERC165.sol";
+import "./SafeMath.sol";
+import "./Address.sol";
+
+contract DeedToken is ERC721, ERC165 {
+
+    using SafeMath for uint256;
+    using Address for address;
+
+    address payable public owner;
+    //mapping 타입의 selector가 true or false를 리턴할 수 있도록 변수 하나를 선언해
+    mapping(bytes4 => bool) supportedInterfaces;
+    //토큰의 소유자 정보를 담고 있는 mapping 타입으로 선언
+    mapping(uint256 => address) tokenOwners;
+    //특정 소유자가 가진 토큰의 수를 담을 수 있는 mapping 타입으로 선언
+    mapping(address => uint256) balances;
+    //어떤 토큰 ID를 어떤 address가 소유권 이전 승인의 권리를 가지고 있는가?
+    mapping(uint256 => address) allowance;
+    //어떤 소유자 계정이 다수에게 자신이 가진 토큰을 관리할 수 있도록 정보를 저장해야 하기 때문에 중계인 계정 address가 이제 boolean 타입으로..
+    mapping(address => mapping(address => bool)) operators;
+    //struct 타입의 asset의 구조체가 담고 있는 것은, 우리가 구현할 이미지의 얼굴, 눈, 입모
+    struct asset {
+        uint8 x; //face
+        uint8 y; //eyes
+        uint8 z; //mouth
+    }
+    //asset 모 구조체를 담을 수 있는 구조체 배열을 선언해준다.
+    asset[] public allTokens;
+
+    //for enumeration
+    //유효한 토큰 아이디만 가지는 배열
+    uint256[] public allValidTokenIds; //same as allTokens but does't have invalid tokens
+    //토큰 아이디를 가지고 인덱스을 구할 수 있는.. 앞에 있는 것은 토큰 ID, 뒤에 있는 것은 INDEX
+    mapping(uint256 => uint256) private allValidTokenIndex;
+
+
+    modifier onlyOwner {
+        require(msg.sender == owner, "Only owner can call this function.");
+        _;
+    }
+    //public 생성자를 만들어, supportedInterfaces에 ERC 721의 selector값을 넣어줘야 true를 리턴할 수 있도
+    constructor() public {
+        owner = msg.sender;
+        //ERC721.sol안에 들어 있음 아래의 0x01ffc9a7, 0x80ac58cd 이것들 생성자에서 초기화를 해주고 나서, supportsInterface구현하면 된다.!
+        supportedInterfaces[0x01ffc9a7] = true; //ERC165
+        supportedInterfaces[0x80ac58cd] = true; //ERC721
+    }
+
+    function supportsInterface(bytes4 interfaceID) external view returns (bool){
+        //interface ID에 맞는 것이 있다면, true를 리턴하고 아니면 false를 리턴하게 될 것!
+        return supportedInterfaces[interfaceID];
+    }
+    //ERC 721.sol에 제공되어있는 함수를 가져온 것,
+    function balanceOf(address _owner) external view returns (uint256) {
+        //토큰 소유 계정을 키로해서 그 값을 리턴해주면 된다 (== 소유 계정의 총 토큰 )
+        require(_owner != address(0));
+        return balances[_owner];
+    }
+
+    function ownerOf(uint256 _tokenId) public view returns (address) {
+        //address owner는 우리가 tokenid 를 넣게 되면, tokenowers의 함수는 토큰 소유 계정을 리턴하여 준다. 여기서 조건 하나를 체크해야 한다!
+        address addr_owner = tokenOwners[_tokenId];
+        //조건: 소유자 계정이 address 가 (0) (== 즉 소유자가 없다면, 예외를 발생시켜라)
+        require(
+            addr_owner != address(0),
+            "Token is invalid"
+        );
+        //괜찮다면, addr_owner를 리턴해주면 된다.
+        return addr_owner;
+    }
+### 3.5 컨트랙트 구현(2) - 기본 인터페이스 (Deeptoken.sol)
+    STEP2: 토큰 소유권 이전
+    function transferFrom(address _from, address _to, uint256 _tokenId) public payable {
+        //ownderOf에 tokenid를 넣어서, 토큰의 소유 계정을 가져오고 여기서 조건을 체크한다.
+        address addr_owner = ownerOf(_tokenId);
+        //파라미터로 받는 from 계정이 token의 오너와 일치해야 한다. 일치 하지 않은 경우, 예외 처
+        require(
+            addr_owner == _from,
+            "_from is NOT the owner of the token"
+        );
+
+        require(
+            //to 계정은 address(0)이 되면 안된다, 이렇게 되면 소유권 이전이 아니라, 토큰이 사라지는
+            _to != address(0),
+            "Transfer _to address 0x0"
+        );
+        //토큰 소유권 권리가 있는 allowance에 있는 계정들이면 가능하다. 그래서 해당 토큰 계정이 allowance에 있는 지 확인한다.
+        address addr_allowed = allowance[_tokenId];
+        //중개인 계정의 소유권 이전할 수 있는 권리가 true인지 승인을 할 수 있는 지 여
+        bool isOp = operators[addr_owner][msg.sender];
+        //msg 호출 계정이 소유계정이나, allowance에 있는 계정인지, 혹은 중개인 계정인지, 이 세 개 중 하나가 걸리면 통과!
+        require(
+            addr_owner == msg.sender || addr_allowed == msg.sender || isOp,
+            "msg.sender does not have transferable token"
+        );
+
+        
+        //transfer : change the owner of the token
+        //토큰의 주인을 to 계정으로 바꿔준다. 
+        tokenOwners[_tokenId] = _to;
+        //from 계정의 balance는 한 개가 줄게 된다.
+        balances[_from] = balances[_from].sub(1);
+        //to계정의 balance는 한개가 늘어나게 됌.
+        balances[_to] = balances[_to].add(1);
+
+        //reset approved address
+        //소유 계정이 바뀌었기 때문에, 이전 allowance에 있던 소유권 이전이 가능했던 그 계정을 reset 해주어야 한다. 
+        if (allowance[_tokenId] != address(0)) {
+            //delete 라는 키워드를 써서 지워주면, 저 안에 값이 0이 된다.
+            delete allowance[_tokenId];
+        }
+        //ERC721.sol에 존재하는 함수 transfer가 되었다 라는 event를 발생시키면 된다.
+        emit Transfer(_from, _to, _tokenId);
+
+    }
+    //transferfrom..
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes memory data) public payable {
+        //바로 호줄해서, 
+        transferFrom(_from, _to, _tokenId);
+
+        //check if _to is CA
+        //to 계정이 컨트랙트 계정이냐 아니냐에 따라 하나를 더 체크해주어야 한다.
+        if (_to.isContract()) {
+            //to 계정으로 ERC721TokenReceiver.onERC721Received이 함수를 호출한다. selector가 나와야 한다.
+            bytes4 result = ERC721TokenReceiver(_to).onERC721Received(msg.sender, _from, _tokenId, data);
+            //
+            require(
+                result == bytes4(keccak256("onERC721Received(address,address,uint256,bytes)")),
+                "receipt of token is NOT completed"
+            );
+        }
+
+    }
+    //파라미터가 하나 없는 safeTransferFrom이다. 
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) public payable {
+        //마지막 data만 빈 값을 제공한다.
+        safeTransferFrom(_from, _to, _tokenId, "");
+    }
+
+    //
+    function approve(address _approved, uint256 _tokenId) external payable {
+
+        address addr_owner = ownerOf(_tokenId);
+        bool isOp = operators[addr_owner][msg.sender];
+
+        require(
+            addr_owner == msg.sender || isOp,
+            "Not approved by owner"
+        );
+
+        allowance[_tokenId] = _approved;
+
+        emit Approval(addr_owner, _approved, _tokenId);
+    }
+
+    function setApprovalForAll(address _operator, bool _approved) external {
+        operators[msg.sender][_operator] = _approved;
+        emit ApprovalForAll(msg.sender, _operator, _approved);
+    }
+
+
+    function getApproved(uint256 _tokenId) external view returns (address) {
+        return allowance[_tokenId];
+    }
+
+    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+        return operators[_owner][_operator];
+    }
+### 3.6 컨트랙트 구현(3) - 기본 인터페이스 (Deeptoken.sol)
+    //STEP3: 토큰 생성, 삭제 후 인덱싱 다시 하는 함
+    //non-ERC721 standard
+    //
+    //
+    function () external payable {}
+    //토큰 생성 함수, 이미지 토큰 
+    function mint(uint8 _x, uint8 _y, uint8 _z) external payable {
+        //함수 내부에서만 쓰는 newAsset변수를 선언하고, asset을 통해서 구조체 하나 생성
+        asset memory newAsset = asset(_x, _y, _z);
+        //푸쉬를 했을때에 return은 배열의 길이가 나온다, 인덱스를 토큰 아이디로 사용하기로 함 0번부터
+        uint tokenId = allTokens.push(newAsset) - 1;
+        //token id starts from 0, index of assets array
+        tokenOwners[tokenId] = msg.sender;
+        //장부. 밸런스도 한개가 늘어났다.
+        balances[msg.sender] = balances[msg.sender].add(1);
+
+        //for enumeration
+        //현재 만들어진 토큰 아이디를 넣고, 인덱스를 저장해준다.
+        allValidTokenIndex[tokenId] = allValidTokenIds.length;
+        //index starts from 0
+        allValidTokenIds.push(tokenId);
+        //처음에 생성자는 없기 때문에 address (0)이 들어간다.
+        emit Transfer(address(0), msg.sender, tokenId);
+    }
+    //토큰 삭제, 토큰 아이디를 parameter로 받는다.
+    function burn(uint _tokenId) external {
+        //addr_owner 해당 토큰의 소유 계정을 구한다음에.
+        address addr_owner = ownerOf(_tokenId);
+        //msg.sender가 소유자 계정이랑 같은지 확인을 한다.
+        require(
+            addr_owner == msg.sender,
+            "msg.sender is NOT the owner of the token"
+        );
+
+        //reset approved address
+        //토큰의 소유권 이전을 할 수 있도록 계정들을 모아놓은 allowance.
+        if (allowance[_tokenId] != address(0)) {
+            //없다면, 토큰 자체를 지워준다.
+            delete allowance[_tokenId];
+            // tokenId => 0
+        }
+
+        //transfer : change the owner of the token, but address(0)
+        //삭제하는 토큰에 address (0)을 넣어준다.
+        tokenOwners[_tokenId] = address(0);
+        balances[msg.sender] = balances[msg.sender].sub(1);
+
+        //for enumeration
+        removeInvalidToken(_tokenId);
+        //burn 할때 transfer계정이 꼭 있어야 한다.
+        emit Transfer(addr_owner, address(0), _tokenId);
+    }
+### 3.7 컨트랙트 구현(4) - 기본 인터페이스 (Deeptoken.sol)
+   
 
     function removeInvalidToken(uint256 tokenIdToRemove) private {
 
@@ -171,7 +392,7 @@
     function kill() external onlyOwner {
         selfdestruct(owner);
     }
-    ~~~
+    
 ### 3.8 트러플 컴파일, 배포, 단위 테스트
 
 
